@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import StudentTable from "../components/StudentTable";
-import StudentForm from "../components/StudentForm";
-import { StudentType } from "../types/student";
+import StudentTable from "../components/student/StudentTable";
+import StudentForm from "../components/student/StudentForm";
+import type { StudentType } from "../types/student";
 
 const StudentPage: React.FC = () => {
   const [students, setStudents] = useState<StudentType[]>([]);

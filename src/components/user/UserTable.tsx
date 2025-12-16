@@ -1,24 +1,24 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
-import { StudentType } from "../types/student";
+import type { UserType } from "../../types/user";
 
 interface Props {
-  students: StudentType[];
-  setStudents: React.Dispatch<React.SetStateAction<StudentType[]>>;
+  users: UserType[];
+  setUsers: React.Dispatch<React.SetStateAction<UserType[]>>;
 }
 
-function StudentTable({ students, setStudents }: Props) {
-  const fetchStudents = async () => {
+export default function UserTable({ users, setUsers }: Props) {
+  const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/student/get");
-      setStudents(res.data.data);
+      const res = await axios.get("http://localhost:3000/api/user/get");
+      setUsers(res.data.data || []);
     } catch (err) {
       console.log(err);
     }
   };
 
   useEffect(() => {
-    fetchStudents();
+    fetchUsers();
   }, []);
 
   return (
@@ -32,19 +32,21 @@ function StudentTable({ students, setStudents }: Props) {
             <th className="border px-4 py-2">Status</th>
           </tr>
         </thead>
+
         <tbody>
-          {students.map((st) => (
-            <tr key={st._id || st.name} className="even:bg-gray-50">
-              <td className="border px-4 py-2">{st.name}</td>
-              <td className="border px-4 py-2">{st.phone ?? "-"}</td>
-              <td className="border px-4 py-2">{st.age}</td>
+          {users.map((user) => (
+            <tr key={user._id} className="even:bg-gray-50">
+              <td className="border px-4 py-2">{user.name}</td>
+              <td className="border px-4 py-2">{user.phone ?? "-"}</td>
+              <td className="border px-4 py-2">{user.age}</td>
+
               <td className="border px-4 py-2">
                 <span
                   className={`px-2 py-1 text-white rounded text-sm ${
-                    st.status ? "bg-green-600" : "bg-red-500"
+                    user.status ? "bg-green-600" : "bg-red-500"
                   }`}
                 >
-                  {st.status ? "Active" : "Inactive"}
+                  {user.status ? "Active" : "Inactive"}
                 </span>
               </td>
             </tr>
@@ -54,5 +56,3 @@ function StudentTable({ students, setStudents }: Props) {
     </div>
   );
 }
-
-export default StudentTable;

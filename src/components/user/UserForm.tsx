@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { StudentType } from "../types/student";
 import axios from "axios";
+import type { UserType } from "../../types/user";
 
 interface Props {
-  setStudents: React.Dispatch<React.SetStateAction<StudentType[]>>;
+  setUsers: React.Dispatch<React.SetStateAction<UserType[]>>;
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function StudentForm({ setStudents, setShowForm }: Props) {
-  const [formData, setFormData] = useState<StudentType>({
+function UserForm({ setUsers, setShowForm }: Props) {
+  const [formData, setFormData] = useState<UserType>({
     name: "",
     phone: undefined,
     age: 0,
@@ -19,6 +19,7 @@ function StudentForm({ setStudents, setShowForm }: Props) {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+
     setFormData({
       ...formData,
       [name]:
@@ -32,14 +33,16 @@ function StudentForm({ setStudents, setShowForm }: Props) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/student/create",
+        "http://localhost:3000/api/user/create",
         formData
       );
-      // Add new student to table
-      setStudents((prev) => [...prev, res.data]);
-      setShowForm(false); // hide form
+
+      
+      setUsers((prev) => [...prev, res.data.data]);
+      setShowForm(false);
     } catch (err) {
       console.log(err);
     }
@@ -47,7 +50,7 @@ function StudentForm({ setStudents, setShowForm }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="border p-4 rounded mb-6 space-y-3">
-      <h3 className="text-xl font-semibold text-center">Add Student</h3>
+      <h3 className="text-xl font-semibold text-center">Add User</h3>
 
       <input
         name="name"
@@ -93,4 +96,4 @@ function StudentForm({ setStudents, setShowForm }: Props) {
   );
 }
 
-export default StudentForm;
+export default UserForm;

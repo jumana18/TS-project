@@ -1,7 +1,7 @@
 export interface StudentType {
   _id?: string;
   name: string;
-  phone?: number;
+  roll: number;
   age: number;
-  status: boolean;
+  class: string;
 }
